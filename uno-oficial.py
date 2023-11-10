@@ -5,10 +5,10 @@ print('                              U     N     O')
 print(f'{"---------------":>44}')
 # fazer suporte a múltiplos idiomas
 cartas = { # todas as cartas do jogo
-    'vermelho': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '+2', '+2','+2', '+2', '<==', '<==', '<==', '<=='],
-    'verde': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '+2', '+2', '+2', '+2','<==', '<==', '<==', '<=='],
-    'azul': [0, 1, 2, 3, 4, 5,6, 7, 8, 9, '+2', '+2','+2', '+2', '<==', '<==', '<==', '<=='],
-    'amarelo': [0, 1, 2, 3, 4, 5,6, 7, 8, 9, '+2', '+2','+2', '+2', '<==', '<==', '<==', '<==']
+    'vermelho': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '+2', '+2','+2', '+2', '<==', '<=='],
+    'verde': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '+2', '+2', '+2', '+2','<==', '<=='],
+    'azul': [0, 1, 2, 3, 4, 5,6, 7, 8, 9, '+2', '+2','+2', '+2', '<==', '<=='],
+    'amarelo': [0, 1, 2, 3, 4, 5,6, 7, 8, 9, '+2', '+2','+2', '+2', '<==', '<==']
 }
 nomes = ['Ana', 'Rafael', 'Rosa', 'Júnior', 'Bia', 'Krikor', 'Nakamura', 'Carlsen', 'Ronaldinho',
          'O maioral', 'Carcomido', 'Jéssica', 'Ambulante'] # dá nome aos bots
@@ -215,16 +215,21 @@ def jogada_normal(lista, chave, numero, execucao, controle, retorno, k):
         sleep(1)
     if controle == True: # como já foi dito, as linhas 140 e 153 tornam controle False e impedem a linha seguinte
         escolha = str(input('Jogue uma carta ou digite "pegar" para pegar uma carta: ')).split() # escolha da carta pelo usuário. Guardada numa lista (função split)
-    if len(escolha) == 1 and escolha[0] == 'pegar': # pegar umas carta
-        while True:
-            chave1 = random.choice(list(cartas.keys())) 
-            valor1 = random.choice(cartas[chave1])
-            tupla1 = (chave1, valor1)
-            lista.append(tupla1)
-            cartas[chave1].remove(valor1)
-            print(f'Você pegou {chave1} {valor1}')
-            sleep(1)
-            break
+    if len(escolha) == 1:
+        if escolha[0] == 'pegar': # pegar umas carta
+            while True:
+                chave1 = random.choice(list(cartas.keys())) 
+                valor1 = random.choice(cartas[chave1])
+                tupla1 = (chave1, valor1)
+                lista.append(tupla1)
+                cartas[chave1].remove(valor1)
+                print(f'Você pegou {chave1} {valor1}')
+                sleep(1)
+                break
+# =============================================================================
+#         elif escolha[0] == 'cor': preciso pensar em como colocar isso no dicionario cartas
+#             print('Altere a cor do topo para:\n1. Vermelho\n2.Verde\n3. Azul\n4. Amarelo')
+# =============================================================================
     elif len(escolha) == 2: # necessário para não dar erro quando o usuário não digitar nada em escolha
         if escolha[1].isdigit(): # se o escolha[1] digitado pelo usuário for um digito
             escolha[1] = int(escolha[1]) # escolha[1] recebe o tipo inteiro dele mesmo e executa a função acima (linha 176)
@@ -233,6 +238,8 @@ def jogada_normal(lista, chave, numero, execucao, controle, retorno, k):
             lista, chave, numero, execucao, adicao, inverter = carta_jogada_eh_valida(escolha, lista, chave, numero,k, execucao, True, False)
         elif escolha[1] == '<==': # se o escolha[1] digitado pelo usuário for <==, executa função da linha 176
             lista, chave, numero, execucao, adicao, inverter = carta_jogada_eh_valida(escolha, lista, chave, numero,k, execucao, False, True)
+        #elif escolha[1] == 'bk':
+            
     else: # para qualquer escolha com tamanho fora do intervalo fechado entre 1 e 2
         execucao = False # execucao recebe False. Na função player, ele que diz que a carta digitada não pode ser jogada linha 263
     return lista, chave, numero, adicao, execucao, inverter
